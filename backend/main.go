@@ -2,15 +2,16 @@ package main
 
 import (
 	"flag"
-	"net"
 	"fmt"
+	"io/ioutil"
+	"net"
+	"os"
+	"os/exec"
+
 	"github.com/sirupsen/logrus"
-	"google.golang.org/grpc"
 	pb "github.com/ypapax/say-grpc/api"
 	"golang.org/x/net/context"
-	"os/exec"
-	"os"
-	"io/ioutil"
+	"google.golang.org/grpc"
 )
 
 func main() {
@@ -28,20 +29,26 @@ func main() {
 		logrus.Fatalf("could not serve: %v", err)
 	}
 
-
 }
 
-type server struct {}
-
+type server struct{}
 
 func (s server) Say(c context.Context, t *pb.Text) (*pb.Speech, error) {
-	cmd := exec.Command("flite", "-t", t.Text, "-o", "output.wav")
+	f, err := ioutil.TempFile("", "")
+	if err != nil {
+		return nil, fmt.Errorf("could not create a temp file")
+	}
+	if err := f.Close(); err != nil {
+		return nil, fmt.Errorf("could not close temporary file")
+	}
+
+	cmd := exec.Command("flite", "-t", t.Text, "-o", f.Name())
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
 		return nil, fmt.Errorf("unable to run flite command: %+v", err)
 	}
-	b, err := ioutil.ReadFile("output.wav")
+	b, err := ioutil.ReadFile(f.Name())
 	if err != nil {
 		return nil, fmt.Errorf("unable to read output file: %+v", err)
 	}
