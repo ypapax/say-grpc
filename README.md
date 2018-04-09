@@ -1,2 +1,2 @@
-Playing around and going though [the golang GRPC and kubernetes tutorial](https://youtu.be/XaMr--wAuSI?list=PL64wiCrrxh4Jisi7OcCJIUpguV_f5jGnZ).
+Playing around and going through [the golang GRPC and kubernetes tutorial](https://youtu.be/XaMr--wAuSI?list=PL64wiCrrxh4Jisi7OcCJIUpguV_f5jGnZ).
 Cluster is prepared by [this](https://github.com/ypapax/kubernetes_moving_to_the_google_cloud/blob/master/Makefile#L14) command.
