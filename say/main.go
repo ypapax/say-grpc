@@ -6,11 +6,12 @@ import (
 
 	"google.golang.org/grpc"
 
-	pb "github.com/ypapax/say-grpc/api"
 	"context"
+	"fmt"
 	"io/ioutil"
 	"os"
-	"fmt"
+
+	pb "github.com/ypapax/say-grpc/api"
 )
 
 func main() {
@@ -18,12 +19,12 @@ func main() {
 	output := flag.String("o", "output.wav", "wav output file")
 	flag.Parse()
 
-	if len(os.Args) < 2 {
+	if flag.NArg() < 1 {
 		fmt.Printf("usage:\n\t%s \"text to speak\"\n", os.Args[0])
 		os.Exit(1)
 	}
 
-	text := os.Args[1]
+	text := flag.Arg(0)
 
 	conn, err := grpc.Dial(*backend, grpc.WithInsecure())
 	if err != nil {
