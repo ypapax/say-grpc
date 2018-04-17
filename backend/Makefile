@@ -20,3 +20,10 @@ svc:
 	kubectl get svc
 watch:
 	kubectl get svc -w
+start: # deployment in local kubernetes
+	kubectl create -f kubernetes_external_ip.yaml
+replace:
+	kubectl replace -f kubernetes_external_ip.yaml --force # https://github.com/kubernetes/kubernetes/issues/11237#issuecomment-351419329
+	# to let local kubernetes pull images from google cloud registry: http://docs.heptio.com/content/private-registries/pr-gcr.html
+delete:
+	kubectl delete -f kubernetes_external_ip.yaml
