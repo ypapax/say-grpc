@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: say-deployment
 spec:
-  replicas: 3
+  replicas: 6
   template:
     metadata:
       labels:
@@ -16,14 +16,16 @@ spec:
         - containerPort: 8080
       affinity:
               podAntiAffinity:
-                requiredDuringSchedulingIgnoredDuringExecution:
-                  - labelSelector:
-                      matchExpressions:
-                        - key: "app"
-                          operator: In
-                          values:
-                          - say
-                    topologyKey: "kubernetes.io/hostname"
+                preferredDuringSchedulingIgnoredDuringExecution:
+                  - weight: 100
+                    podAffinityTerm:
+                      labelSelector:
+                        matchExpressions:
+                          - key: "app"
+                            operator: In
+                            values:
+                            - say
+                      topologyKey: "kubernetes.io/hostname"
 ---
 kind: Service
 apiVersion: v1
