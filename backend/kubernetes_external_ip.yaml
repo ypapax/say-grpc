@@ -14,6 +14,16 @@ spec:
         image: gcr.io/hazel-champion-200108/say
         ports:
         - containerPort: 8080
+      affinity:
+              podAntiAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  - labelSelector:
+                      matchExpressions:
+                        - key: "app"
+                          operator: In
+                          values:
+                          - say
+                    topologyKey: "kubernetes.io/hostname"
 ---
 kind: Service
 apiVersion: v1
