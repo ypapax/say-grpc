@@ -27,3 +27,8 @@ replace:
 	# to let local kubernetes pull images from google cloud registry: http://docs.heptio.com/content/private-registries/pr-gcr.html
 delete:
 	kubectl delete -f kubernetes_external_ip.yaml
+
+containerslist:
+	gcloud  container images list --repository=gcr.io/hazel-champion-200108
+containerdelete:
+	gcloud container images delete gcr.io/hazel-champion-200108/say
